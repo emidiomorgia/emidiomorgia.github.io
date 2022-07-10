@@ -3,9 +3,9 @@ markdown:         kramdown
 highlighter:      rouge
 
 # Setup
-title:            Hydeout
-tagline:          'A Jekyll theme'
-description:      'The <a href="http://hyde.getpoole.com" target="_blank">Hyde</a> theme for <a href="http://jekyllrb.com" target="_blank">Jekyll</a>, refreshed.'
+title:            Emidio Morgia
+tagline:          'my blog about software development'
+description:      "Hi I'm Emidio Morgia the author of this blog. I like to learn, share and talk about software architecture, Domain Driven Design, Microservices, CI/CD, TDD, High Availability, DevOps and OSS"
 url:              https://emidiomorgia.github.io
 remote_theme:     fongandrew/hydeout
 #baseurl:          '/hydeout'
@@ -16,8 +16,8 @@ remote_theme:     fongandrew/hydeout
                   # sidebar_blog_link below.
 
 author:
-  name:           'Andrew Fong'
-  url:            https://twitter.com/fongandrewc
+  name:           'Emidio Morgia'
+  url:            https://twitter.com/emidiomorgia
 
 paginate:         5
 # paginate_path:    '/page:num'
