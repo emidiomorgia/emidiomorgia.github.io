@@ -5,8 +5,7 @@ sidebar_link: true
 ---
 
 <p class="message">
-  Hey there! This page is included as an example. Feel free to customize it
-  for your own use upon downloading. Carry on!
+Hi I'm Emidio Morgia the author of this blog. I like to learn, share and talk about software architecture, Domain Driven Design, Microservices, CI/CD, TDD, High Availability, DevOps and OSS
 </p>
 
 To make pages show up in the sidebar, add `sidebar_link: true` to the front
