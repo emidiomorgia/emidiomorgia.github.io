@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Emidio Morgia</title>
+    <link>http://localhost:1313/</link>
+    <description>Recent content on Emidio Morgia</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>Emidio Morgia</copyright>
+    <lastBuildDate>Mon, 18 Oct 2021 15:38:30 +0800</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to setup a pipeline with GitHub (part 2)</title>
+      <link>http://localhost:1313/posts/github-pipeline-2/</link>
+      <pubDate>Mon, 18 Oct 2021 15:38:30 +0800</pubDate>
+      
+      <guid>http://localhost:1313/posts/github-pipeline-2/</guid>
+      <description>1. OverviewLet&amp;rsquo;s continue with the series of posts dedicated to GitHub Actions with the second article where we will talk about how to build and publish a Docker image from your GitHub repository.
+If you alredy know about Docker, containers, images and docker hub you can jump into paragraph 2.
+Why is it important to automate the process of creating container images from our code repository? Because in this way, at each commit of our stable branch, we can execute a workflow that, for example: tests our code, creates an image and pushes it on a container registry.</description>
+    </item>
+    
+    <item>
+      <title>How to setup a pipeline with GitHub (part 1)</title>
+      <link>http://localhost:1313/posts/github-pipeline-1/</link>
+      <pubDate>Sat, 04 Sep 2021 15:38:30 +0800</pubDate>
+      
+      <guid>http://localhost:1313/posts/github-pipeline-1/</guid>
+      <description>1. OverviewLet&amp;rsquo;s start this series of posts &amp;ldquo;Series of posts&amp;rdquo;) dedicated to GitHub Actions with the first article about the definition of Action and how to create our workflow using the actions made available by the community.
+1.1 About GitHub ActionsAccording to the GitHub documentation, a GitHub Action can: automate, customize, and run software development workflows right in your repository.
+A typical use of GitHub Actions is to create a workflow to manage the Continuous Integration and Continuous Delivery or Deployment phase.</description>
+    </item>
+    
+    <item>
+      <title>How to setup a pipeline with GitHub</title>
+      <link>http://localhost:1313/posts/github-pipeline-0/</link>
+      <pubDate>Fri, 20 Aug 2021 15:38:30 +0800</pubDate>
+      
+      <guid>http://localhost:1313/posts/github-pipeline-0/</guid>
+      <description>In this series of posts I will show you how to set up a GitHub Action that will be triggered when you commit to the repository. The Action in particular will test the code, create a Docker image and publish it to the docker hub. Next we will use NGINX server in Ubuntu it as a reverse proxy to run our Docker image downloaded from Docker Hub and run through D_ocker Compose_ on a custom port exposed to the outside through NGINX.</description>
+    </item>
+    
+    <item>
+      <title>What this blog will cover</title>
+      <link>http://localhost:1313/posts/what-this-blog-will-cover/</link>
+      <pubDate>Sat, 19 Jun 2021 15:38:30 +0800</pubDate>
+      
+      <guid>http://localhost:1313/posts/what-this-blog-will-cover/</guid>
+      <description>In this blog I will talk about the known and lesser known topics concerning the possibility of creating a modern, professional, multiplatform, modular, performing, highly available, scalable and maintainable software.
+Which languages and frameworks will I deal with? I prefer C# and dotnet, Java, Javascript / Typescript and Nodejs equally.
+What about logical architecture? I will talk about the design of an architecture using the following mothodologies: Domain Driven Design CQRS and the Clean Architecture.</description>
+    </item>
+    
+  </channel>
+</rss>
