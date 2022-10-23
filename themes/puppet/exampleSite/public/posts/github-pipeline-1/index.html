@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  
+  
+    
+  
+
+  <title>How to setup a pipeline with GitHub (part 1) | Emidio Morgia</title>
+
+  
+  <meta name="author" content="Emidio Morgia">
+  
+  <meta name="description" content="1. OverviewLet&rsquo;s start this series of posts &ldquo;Series of posts&rdquo;) dedicated to GitHub Actions with the first article about the definition of Action and how to create our workflow using the actions made available by the community.
+1.1 About GitHub ActionsAccording to the GitHub documentation, a GitHub Action can: automate, customize, and run software development workflows right in your repository.
+A typical use of GitHub Actions is to create a workflow to manage the Continuous Integration and Continuous Delivery or Deployment phase.">
+  <meta name="keywords" content="blog,developer,ddd,ci/cd,microservices,clean architecture">
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="How to setup a pipeline with GitHub (part 1)"/>
+<meta name="twitter:description" content="1. OverviewLet&rsquo;s start this series of posts &ldquo;Series of posts&rdquo;) dedicated to GitHub Actions with the first article about the definition of Action and how to create our workflow using the actions made available by the community.
+1.1 About GitHub ActionsAccording to the GitHub documentation, a GitHub Action can: automate, customize, and run software development workflows right in your repository.
+A typical use of GitHub Actions is to create a workflow to manage the Continuous Integration and Continuous Delivery or Deployment phase."/>
+
+  <meta property="og:title" content="How to setup a pipeline with GitHub (part 1)" />
+<meta property="og:description" content="1. OverviewLet&rsquo;s start this series of posts &ldquo;Series of posts&rdquo;) dedicated to GitHub Actions with the first article about the definition of Action and how to create our workflow using the actions made available by the community.
+1.1 About GitHub ActionsAccording to the GitHub documentation, a GitHub Action can: automate, customize, and run software development workflows right in your repository.
+A typical use of GitHub Actions is to create a workflow to manage the Continuous Integration and Continuous Delivery or Deployment phase." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/posts/github-pipeline-1/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-09-04T15:38:30+08:00" />
+<meta property="article:modified_time" content="2021-09-04T15:38:30+08:00" />
+<meta property="og:see_also" content="http://localhost:1313/posts/github-pipeline-2/" /><meta property="og:see_also" content="http://localhost:1313/posts/github-pipeline-0/" />
+
+
+
+  <link rel="stylesheet" href="/css/bootstrap.min.css"  crossorigin="anonymous">
+  
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+    type="text/css">
+
+  
+  
+  <link rel="stylesheet" href="/sass/main.css">
+
+  
+  <link rel="stylesheet" href="/zoomjs/zoom.min.css">
+
+  
+
+  <script src=/js/lazysizes.min.js></script>
+
+  
+  
+
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  
+
+</head>
+
+
+
+<body ontouchstart="">
+
+  
+  
+  
+  
+  
+
+  
+  
+  
+
+  
+  
+
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top ">
+  <div class="container-fluid">
+    
+    <div class="navbar-header page-scroll">
+      <button type="button" class="navbar-toggle">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="http://localhost:1313">Emidio Morgia</a>
+    </div>
+    
+    <div id="huxblog_navbar">
+      <div class="navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          
+          <li><a href="/" title="Home">Home</a></li>
+          
+          <li><a href="/archive/" title="Archive">Archive</a></li>
+          
+          <li><a href="/series/github-actions/" title="Github Actions">Github Actions</a></li>
+          
+          <li><a href="/about/" title="About">About</a></li>
+          
+          <li><a href="https://github.com/emidiomorgia/" title="Github">Github</a></li>
+          
+
+          <li class="search-icon">
+            <a href="javascript:void(0)">
+              <i class="fa fa-search"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+  </div>
+  
+</nav>
+<script>
+  
+  
+  
+  var $body = document.body;
+  var $toggle = document.querySelector(".navbar-toggle");
+  var $navbar = document.querySelector("#huxblog_navbar");
+  var $collapse = document.querySelector(".navbar-collapse");
+
+  var __HuxNav__ = {
+    close: function () {
+      $navbar.className = " ";
+      
+      setTimeout(function () {
+        
+        if ($navbar.className.indexOf("in") < 0) {
+          $collapse.style.height = "0px";
+        }
+      }, 400);
+    },
+    open: function () {
+      $collapse.style.height = "auto";
+      $navbar.className += " in";
+    },
+  };
+
+  
+  $toggle.addEventListener("click", function (e) {
+    if ($navbar.className.indexOf("in") > 0) {
+      __HuxNav__.close();
+    } else {
+      __HuxNav__.open();
+    }
+  });
+
+  
+
+  document.addEventListener("click", function (e) {
+    if (e.target == $toggle) return;
+    if (e.target.className == "icon-bar") return;
+    __HuxNav__.close();
+  });
+</script>
+  
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+  
+
+
+<style type="text/css">
+  header.intro-header {
+    position: relative;
+    background-image: url('/roman-synkevych-wX2L8L-fGeA-unsplash.jpg');
+  }
+</style>
+
+<header class="intro-header ">
+
+  <div class="header-mask"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <div class="tags">
+            
+            <a class="tag" href="/tags/ci/cd/" title="ci/cd">ci/cd</a>
+            
+            <a class="tag" href="/tags/github-actions/" title="GitHub Actions">GitHub Actions</a>
+            
+          </div>
+          <h1>How to setup a pipeline with GitHub (part 1)</h1>
+          <h2 class="subheading"></h2>
+          <span class="meta">
+            Posted by  Emidio Morgia 
+            on Sat, Sep 4, 2021
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+  
+
+
+<article>
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="
+              col-lg-8 col-lg-offset-2
+              col-md-10 col-md-offset-1
+              post-container">
+        <h2 id="1-overview">1. Overview<a class="anchorjs-link" href="#1-overview"></a></h2><p>Let&rsquo;s start this <a href="/series/github-actions">series of posts</a> &ldquo;Series of posts&rdquo;) dedicated to GitHub Actions with the first article about the definition of Action and how to create our workflow using the actions made available by the community.</p>
+<h2 id="11-about-github-actions">1.1 About GitHub Actions<a class="anchorjs-link" href="#11-about-github-actions"></a></h2><p>According to the GitHub documentation, a <a href="https://docs.github.com/en/actions" target="_blank">GitHub Action</a> can: <strong>automate, customize, and run software development workflows right in your repository.</strong></p>
+<p>A typical use of GitHub Actions is to create a workflow to manage the Continuous Integration and Continuous Delivery or Deployment phase. In this article we will refer to the abbreviation <strong>CI/CD</strong> to indicate the combined practices of <em><strong>continuous integration</strong></em> (CI) and either <em><strong>continuous delivery</strong></em> or <strong>continuous deployment</strong> (CD).</p>
+<h2 id="12-about-cicd">1.2 About CI/CD<a class="anchorjs-link" href="#12-about-cicd"></a></h2><p>According to Wikipedia: <a href="https://en.wikipedia.org/wiki/CI/CD" target="_blank">CI/CD</a> <strong>bridges the gaps between development and operation activities and teams by enforcing automation in building, testing and deployment of applications.</strong></p>
+<p>Therefore, <strong>through the CI/CD it is possible to manage, for example, all the activities necessary to publish or deliver the output</strong> deriving from the compilation of the sources. It is also possible to condition the execution of the publication on the results of the tests or on the level of coverage of the tests or on the quality of the code.</p>
+<p>Again according to Wikipedia: <strong><a href="https://en.wikipedia.org/wiki/Continuous_integration" target="_blank">Continuous Integration (CI)</a></strong> is the practice of merging all developers&rsquo; working copies to a shared mainline several times a day.</p>
+<p>For example, with continuos integration, we could monitor a branch on which to merge pull requests and <strong>verify in real time that it is ready to be promoted to a release branch</strong> by verifying the outcome of the automatic tests or measuring some parameters relating to the quality of the code.</p>
+<p>Or we could set up a workflow to <strong>discard pull requests</strong> for which automatic tests and quality parameters do not meet the acceptance levels we set.</p>
+<p>According to Wikipedia: <strong><a href="https://en.wikipedia.org/wiki/Continuous_delivery" target="_blank">Continuous Delivery (CD)</a></strong> is an approach in which teams produce software in short cycles, ensuring that the software can be reliably released at any time and, when releasing the software, without doing so manually</p>
+<p>For example we could <strong>automate the creation of docker images</strong> to be published on docker hub or the creation of npm, nuget or maven packages or the creation of binary distributions of our sources compiled for different architectures.</p>
+<p>As this topic is beyond the scope of this article to learn more you can follow the links below to get detailed information on <a href="https://en.wikipedia.org/wiki/Continuous_integration" target="_blank">CI</a> and <a href="https://en.wikipedia.org/wiki/Continuous_delivery" target="_blank">CD</a>.</p>
+<h2 id="2-setup-a-simple-github-action">2. Setup a simple GitHub Action<a class="anchorjs-link" href="#2-setup-a-simple-github-action"></a></h2><p>Let&rsquo;s start to see where it is possible to view the actions connected to our GitHub project and how to create the first action that performs a greeting.</p>
+<h2 id="21-enable-actions-on-repository">2.1 Enable Actions on repository<a class="anchorjs-link" href="#21-enable-actions-on-repository"></a></h2><p>Assuming you have an existing GitHub project, make sure you have enabled Actions by going to the <strong>Settings</strong> menu and clicking on the <strong>Actions</strong> item. We need to make sure that &ldquo;<strong>Allow all actions</strong>&rdquo; is checked.</p>
+<p><figure>
+  <a class="paragraph-image">
+    <img data-src="/Action-setup-2.png" data-action="zoom" alt=""  class="lazyload">
+  </a>
+  
+</figure></p>
+<p>Enable Actions</p>
+<h2 id="heading"><a class="anchorjs-link" href="#heading"></a></h2><p>2.2 Choose an existing Action template from marketplace</p>
+<p>Then we can use the &ldquo;<strong>Actions</strong>&rdquo; link on the toolbar to view the list of actions already set. In case there are not already saved actions, GitHub offers us a selection of actions compatible with the content of our repository.</p>
+<p><figure>
+  <a class="paragraph-image">
+    <img data-src="/Action-create-1.png" data-action="zoom" alt=""  class="lazyload">
+  </a>
+  
+</figure></p>
+<p>List of marketplace Actions to use</p>
+<p>For example we can use the Action &ldquo;<strong>Greetings</strong>&rdquo; that we find at the bottom of the list among the examples provided by GitHub.</p>
+<p><figure>
+  <a class="paragraph-image">
+    <img data-src="/Action-create-greeting-1.png" data-action="zoom" alt=""  class="lazyload">
+  </a>
+  
+</figure></p>
+<p>Choose Greeting Action example by Github</p>
+<p>GitHub will create a <strong>greetings.yml</strong> file in the folder: &ldquo;<em>.github/workflows</em>&rdquo;.</p>
+<h2 id="23-customize-the-action-using-the-editor">2.3 Customize the Action using the editor<a class="anchorjs-link" href="#23-customize-the-action-using-the-editor"></a></h2><p>Before saving the Action source code we can edit steps as we like.</p>
+<p>Basically we&rsquo;ll have the following:</p>
+<p>line 1: name of the action<br>
+line 3: the events for which the action will be activated<br>
+line 5: a list of jobs (in our case only one)<br>
+line 6: a job called &ldquo;greeting&rdquo;<br>
+line 7:  the parameter that establishes the execution environment as linux ubuntu<br>
+line 8-10: permissions for executing the action<br>
+line 11: a series of steps<br>
+line 12: the action id on which this step is based<br>
+line 13: a list of parameters for the step<br>
+line 14: the repository token (taken from repository secrets)<br>
+line 15-16: the messages this action will use to greet the user</p>
+<p><figure>
+  <a class="paragraph-image">
+    <img data-src="/Action-create-greeting2-1.png" data-action="zoom" alt=""  class="lazyload">
+  </a>
+  
+</figure></p>
+<p>greeting.yml file created by GitHub</p>
+<p>For a guide to the syntax and commands of the actions I refer you to this <a href="https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions" target="_blank">link</a>.</p>
+<h2 id="24-test-the-action">2.4 Test the action<a class="anchorjs-link" href="#24-test-the-action"></a></h2><p>If you try to go to the &ldquo;<strong>Action</strong>&rdquo; menu you should see an empty list of executed Actions because no user has yet created an issue. When a user creates a new issue for the first time, our action will be invoked and the user will receive the message within the issue thread and will also receive the message by email.</p>
+<p><figure>
+  <a class="paragraph-image">
+    <img data-src="/actions-list.png" data-action="zoom" alt=""  class="lazyload">
+  </a>
+  
+</figure></p>
+<p>Action list is empty</p>
+<p>We will now create a first issue and verify that the Action runs as expected.</p>
+<p><figure>
+  <a class="paragraph-image">
+    <img data-src="/issue-creation.png" data-action="zoom" alt=""  class="lazyload">
+  </a>
+  
+</figure></p>
+<p>First issue creation</p>
+<p>Once the issue has been saved, we can <strong>go back to the list</strong> of Actions to verify that it is executed.</p>
+<p><figure>
+  <a class="paragraph-image">
+    <img data-src="/action-running.png" data-action="zoom" alt=""  class="lazyload">
+  </a>
+  
+</figure></p>
+<p>The Action is currently running</p>
+<p><figure>
+  <a class="paragraph-image">
+    <img data-src="/action-executed.png" data-action="zoom" alt=""  class="lazyload">
+  </a>
+  
+</figure></p>
+<p>The Action is executed with success</p>
+<p>Now if we click on the <strong>Action detail</strong> we can inspect the log.</p>
+<p><figure>
+  <a class="paragraph-image">
+    <img data-src="/action-log.png" data-action="zoom" alt=""  class="lazyload">
+  </a>
+  
+</figure></p>
+<p>Action log after executed</p>
+<p>Let&rsquo;s reopen the initial issue to see how it has been modified by our Action. <strong>We should find a welcome message</strong> following the text of our issue.</p>
+<p><figure>
+  <a class="paragraph-image">
+    <img data-src="/issue-after-action.png" data-action="zoom" alt=""  class="lazyload">
+  </a>
+  
+</figure></p>
+<p>You can find the <strong>source of this example</strong> within <a href="https://github.com/emidiomorgia/electron-angular" target="_blank">this</a> GitHub repository in the .github/workflows folder.</p>
+<h2 id="25-thats-all-for-now">2.5 That&rsquo;s all for now<a class="anchorjs-link" href="#25-thats-all-for-now"></a></h2><p>In summary, we have seen what <strong>Continuous Integration and Continuos Delivery / Deploy</strong> are and what problems they want to solve. Below we have seen how it is possible to use <strong>GitHub Actions to automate workflows</strong> in response to events in our repository with a simple example.</p>
+<p>Don&rsquo;t miss the <strong><a href="https://www.morgia.info/how-to-setup-a-pipeline-with-github-action-in-order-to-build-and-publish-a-docker-image-from-your-repo-into-docker-hub-part-2/" target="_blank">next post</a></strong> where we will talk about how to create an Action that <strong>compiles the source</strong> code of an Angular project and executes the automatic tests. We will also use another Action which, at the end of the Angular project build, will <strong>create a Docker image</strong> (containing NGINX and the static content of the project) and then <strong>publish the content</strong> on a Docker Hub repository.</p>
+
+
+        <hr style="visibility: hidden;" />
+        <ul class="pager">
+          
+          <li class="previous">
+            <a href="/posts/github-pipeline-0/" data-toggle="tooltip" data-placement="top" title="How to setup a pipeline with GitHub">
+              Previous<br>
+              <span>How to setup a pipeline with GitHub</span>
+            </a>
+          </li>
+          
+          
+          <li class="next">
+            <a href="/posts/github-pipeline-2/" data-toggle="tooltip" data-placement="top" title="How to setup a pipeline with GitHub (part 2)">
+              Next<br>
+              <span>How to setup a pipeline with GitHub (part 2)</span>
+            </a>
+          </li>
+          
+        </ul>
+        <hr style="visibility: hidden;" />
+
+        
+        
+
+
+
+
+
+
+      </div>
+
+      
+      
+      
+      <div class="
+              col-lg-2 col-lg-offset-0
+              visible-lg-block
+              sidebar-container
+              catalog-container">
+        <div class="side-catalog">
+          <hr class="hidden-sm hidden-xs">
+          <h5>
+            <a class="catalog-toggle" href="#">CATALOG</a>
+          </h5>
+          <ul class="catalog-body"></ul>
+        </div>
+      </div>
+      
+      
+      <div class="
+              col-lg-8 col-lg-offset-2
+              col-md-10 col-md-offset-1
+              sidebar-container">
+
+        
+        
+        <section>
+  
+  
+  <hr class="hidden-sm hidden-xs">
+  
+  <h5>FEATURED TAGS</h5>
+  <div class="tags">
+    
+    <a href="/tags/blog/">blog</a>
+    
+    <a href="/tags/ci/cd/">ci/cd</a>
+    
+    <a href="/tags/github-actions/">GitHub Actions</a>
+    
+  </div>
+</section>
+
+        
+        
+
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+  
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        
+        
+
+
+<ul class="list-inline text-center">
+
+  
+  <li>
+    <a href=/index.xml>
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a href="https://twitter.com/emidiomorgia">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://www.facebook.com/emidio.morgia">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/emidiomorgia">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.linkedin.com/in/emidio-morgia-93127a35">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+</ul>
+        <p class="copyright text-muted">
+          Emidio Morgia  
+          <br>
+          Powered by <a href="https://gohugo.io">Hugo</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src=/js/jquery.min.js></script>
+<script src=/js/bootstrap.min.js crossorigin="anonymous"></script>
+
+
+
+<script src="/js/hux-blog.min.73a6a8d8df45293e042d15867416f603045bbeb98406731e5022d6c60388cd9d.js"></script>
+
+
+<script src=/js/simple-jekyll-search.min.js></script>
+
+
+<script src="/js/search.min.53bce5da475b4d362500e5ce5dddfa22e20e1b9018777411d2020b4b839c9310.js"></script>
+
+
+
+
+
+
+<script type="text/javascript">
+  function generateCatalog(selector) {
+    _containerSelector = 'div.post-container'
+    
+    var P = $(_containerSelector), a, n, t, l, i, c;
+    a = P.find('h1,h2,h3,h4');
+    
+    $(selector).html('')
+    
+    a.each(function () {
+      n = $(this).prop('tagName').toLowerCase();
+      i = "#" + $(this).prop('id');
+      t = $(this).text();
+      c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+      l = $('<li class="' + n + '_nav"></li>').append(c);
+      $(selector).append(l);
+    });
+    return true;
+  }
+
+  generateCatalog(".catalog-body");
+
+  
+  $(".catalog-toggle").click((function (e) {
+    e.preventDefault();
+    $('.side-catalog').toggleClass("fold")
+  }))
+</script>
+
+
+<script type="text/javascript" src='/js/jquery.nav.min.ade6bde8f9fcc6a4b40852cb892e9f5912340ab8fe1305149d917fdd16fffd8d.js'></script>
+<script>
+   $(document).ready( function () {
+    $('.catalog-body').onePageNav({
+      currentClass: "active",
+      changeHash: !1,
+      easing: "swing",
+      filter: "",
+      scrollSpeed: 700,
+      scrollOffset: 0,
+      scrollThreshold: .2,
+      begin: null,
+      end: null,
+      scrollChange: null,
+      padding: 80
+    });
+  });
+</script>
+
+
+
+
+
+
+
+
+
+<script src="/zoomjs/zoom.min.js"></script>
+
+</body>
+
+</html>
